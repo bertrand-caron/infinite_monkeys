@@ -12,6 +12,30 @@ LIMIT = 4
 
 KEEP_ARTICLES_WITH_NO_DATE = True
 
+def process_rss_entry(entry: Any, company: str) -> Any:
+    if KEEP_ARTICLES_WITH_NO_DATE or (not KEEP_ARTICLES_WITH_NO_DATE and hasattr(entry, 'published')):
+        article = {}
+        article['link'] = entry.link
+        try:
+            date = entry.published_parsed
+            article['published'] = datetime.fromtimestamp(mktime(date)).isoformat()
+        except:
+            article['published'] = None
+        try:
+            content = Article(entry.link)
+            content.download()
+            content.parse()
+        except Exception as e:
+            # If the download for some reason fails (ex. 404) the script will continue downloading
+            # the next article.
+            print(e)
+            print("continuing...")
+            return None
+        article['title'] = content.title or entry.title
+        article['text'] = content.text
+        print("Article downloaded from", company, ", url: ", entry.link)
+        return article
+
 def get_articles_from_company(company: str, links_dict: Dict[str, str]) -> Any:
     count = 1
     # If a RSS link is provided in the JSON file, this will be the first choice.
@@ -23,36 +47,16 @@ def get_articles_from_company(company: str, links_dict: Dict[str, str]) -> Any:
         newsPaper = {
             "rss": links_dict['rss'],
             "link": links_dict['link'],
-            "articles": []
+            "articles": list(
+                filter(
+                    lambda article: article is not None,
+                    map(
+                        lambda entry: process_rss_entry(entry, company),
+                        d.entries,
+                    ),
+                ),
+            ),
         }
-        for entry in d.entries:
-            # Check if publish date is provided, if no the article is skipped.
-            # This is done to keep consistency in the data and to keep the script from crashing.
-            if KEEP_ARTICLES_WITH_NO_DATE or (not KEEP_ARTICLES_WITH_NO_DATE and hasattr(entry, 'published')):
-                if count > LIMIT:
-                    break
-                article = {}
-                article['link'] = entry.link
-                try:
-                    date = entry.published_parsed
-                    article['published'] = datetime.fromtimestamp(mktime(date)).isoformat()
-                except:
-                    article['published'] = None
-                try:
-                    content = Article(entry.link)
-                    content.download()
-                    content.parse()
-                except Exception as e:
-                    # If the download for some reason fails (ex. 404) the script will continue downloading
-                    # the next article.
-                    print(e)
-                    print("continuing...")
-                    continue
-                article['title'] = content.title or entry.title
-                article['text'] = content.text
-                newsPaper['articles'].append(article)
-                print(count, "articles downloaded from", company, ", url: ", entry.link)
-                count = count + 1
     else:
         # This is the fallback method if a RSS-feed link is not provided.
         # It uses the python newspaper library to extract articles
