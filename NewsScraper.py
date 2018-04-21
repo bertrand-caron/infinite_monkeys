@@ -41,7 +41,10 @@ for company, value in companies.items():
                 article = {}
                 article['link'] = entry.link
                 date = entry.published_parsed
-                article['published'] = datetime.fromtimestamp(mktime(date)).isoformat()
+                try:
+                    article['published'] = datetime.fromtimestamp(mktime(date)).isoformat()
+                except:
+                    article['published'] = None
                 try:
                     content = Article(entry.link)
                     content.download()
