@@ -36,9 +36,12 @@ def article_similarity_v_1(article: str, _article: str) -> float:
         ]
     )
 
-def article_similarity_v_2(article_link: str, _article_link: str) -> float:
-    word_set, _word_set = map(set, (article_link, _article_link))
-    return len(word_set & _word_set) / len(word_set | _word_set)
+def article_similarity_v_2(article_word_dict: str, _article_word_dict: str) -> float:
+    word_set, _word_set = map(set, (article_word_dict, _article_word_dict))
+    try:
+        return len(word_set & _word_set) / len(word_set | _word_set)
+    except ZeroDivisionError:
+        return -1000.
 
 def truncate_link(link: str, max_length: int = 50) -> str:
     link_basename = basename(link)
@@ -59,7 +62,6 @@ if __name__ == '__main__':
         ],
         []
     )
-
 
     keyword_frequency_for_link = {
         article['link']: get_keyword_frequency(article['text'])
