@@ -1,108 +1,153 @@
 {
  "nodes": [
   {
-   "id": "http://edition.cnn.com/2017/03/04/vr/how-to-watch-vr",
+   "id": "how-to-watch-vr",
    "group": 1
   },
   {
-   "id": "http://edition.cnn.com/videos/world/2018/02/09/yak-tengri-nancy-great-by-design-jlm-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "id": "",
    "group": 1
   },
   {
-   "id": "http://edition.cnn.com/videos/world/2018/01/26/cybersecurity-great-by-design-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "id": "",
    "group": 1
   },
   {
-   "id": "http://edition.cnn.com/videos/world/2018/01/18/nomad-clan-great-by-design-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "id": "",
    "group": 1
   },
   {
-   "id": "http://www.bbc.co.uk/news/world-asia-43846488",
+   "id": "world-asia-43846488",
    "group": 1
   },
   {
-   "id": "http://www.bbc.co.uk/news/world-europe-43841194",
+   "id": "world-europe-43841194",
    "group": 1
   },
   {
-   "id": "http://www.bbc.co.uk/news/entertainment-arts-43843615",
+   "id": "entertainment-arts-43843615",
    "group": 1
   },
   {
-   "id": "http://www.bbc.co.uk/news/uk-43846047",
+   "id": "uk-43846047",
    "group": 1
   },
   {
-   "id": "https://www.theguardian.com/world/2018/apr/20/north-korea-suspends-nuclear-missile-tests",
+   "id": "north-korea-suspends-nuclear-missile-tests",
    "group": 1
   },
   {
-   "id": "https://www.theguardian.com/uk-news/2018/apr/20/theresa-may-says-windrush-victims-will-be-paid-compensation",
+   "id": "theresa-may-says-windrush-victims-will-be-paid-...",
    "group": 1
   },
   {
-   "id": "https://www.theguardian.com/music/2018/apr/20/swedish-dj-avicii-dies-aged-28",
+   "id": "swedish-dj-avicii-dies-aged-28",
    "group": 1
   },
   {
-   "id": "https://www.theguardian.com/uk-news/2018/apr/20/man-arrested-over-suspected-role-in-hither-green-burglary",
+   "id": "man-arrested-over-suspected-role-in-hither-gree...",
    "group": 1
   },
   {
-   "id": "http://www.breitbart.com/national-security/2018/04/20/north-korean-state-media-claims-shutdown-nuclear-program/",
+   "id": "",
    "group": 1
   },
   {
-   "id": "http://www.breitbart.com/national-security/2018/04/20/north-korean-state-media-claims-shutdown-nuclear-program/#disqus_thread",
+   "id": "#disqus_thread",
    "group": 1
   },
   {
-   "id": "http://www.breitbart.com/video/2018/04/20/ann-coulter-not-sure-trust-james-comey-reliable-narrator-gigantic-pompous-fruitcake/",
+   "id": "",
    "group": 1
   },
   {
-   "id": "http://www.breitbart.com/video/2018/04/20/ann-coulter-not-sure-trust-james-comey-reliable-narrator-gigantic-pompous-fruitcake/#disqus_thread",
+   "id": "#disqus_thread",
    "group": 1
   },
   {
-   "id": "https://www.infowars.com/trump-announces-plan-to-build-an-arab-army-so-us-troops-can-leave-syria/",
+   "id": "",
    "group": 1
   },
   {
-   "id": "https://www.infowars.com/macron-europe-faces-unprecedented-mass-migration-shares-destiny-with-africa/",
+   "id": "",
    "group": 1
   },
   {
-   "id": "https://www.infowars.com/judge-kimba-wood-orders-trumps-private-files-to-be-distributed-across-federal-server/",
+   "id": "",
    "group": 1
   },
   {
-   "id": "http://www.foxnews.com/politics/2018/04/20/mccabes-fate-rests-with-trump-appointed-prosecutor.html",
+   "id": "mccabes-fate-rests-with-trump-appointed-prosecu...",
    "group": 1
   },
   {
-   "id": "http://www.foxnews.com/entertainment/2018/04/20/anthony-bourdain-slams-alec-baldwins-take-on-metoo-movement-just-shut-up.html",
+   "id": "anthony-bourdain-slams-alec-baldwins-take-on-me...",
    "group": 1
   },
   {
-   "id": "http://www.foxnews.com/entertainment/2018/04/20/swedish-house-dj-avicii-dead-at-28.html",
+   "id": "swedish-house-dj-avicii-dead-at-28.html",
    "group": 1
   }
  ],
  "links": [
   {
-   "source": "http://edition.cnn.com/videos/world/2018/02/09/yak-tengri-nancy-great-by-design-jlm-orig-lon.cnn/video/playlists/intl-great-by-design/",
-   "target": "http://edition.cnn.com/videos/world/2018/01/18/nomad-clan-great-by-design-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "source": "",
+   "target": "",
    "value": 1.0
   },
   {
-   "source": "http://www.breitbart.com/national-security/2018/04/20/north-korean-state-media-claims-shutdown-nuclear-program/",
-   "target": "http://www.breitbart.com/national-security/2018/04/20/north-korean-state-media-claims-shutdown-nuclear-program/#disqus_thread",
+   "source": "world-asia-43846488",
+   "target": "north-korea-suspends-nuclear-missile-tests",
+   "value": 0.21645021645021645
+  },
+  {
+   "source": "world-asia-43846488",
+   "target": "",
+   "value": 0.17272727272727273
+  },
+  {
+   "source": "world-asia-43846488",
+   "target": "#disqus_thread",
+   "value": 0.17272727272727273
+  },
+  {
+   "source": "world-europe-43841194",
+   "target": "swedish-dj-avicii-dies-aged-28",
+   "value": 0.2131367292225201
+  },
+  {
+   "source": "world-europe-43841194",
+   "target": "swedish-house-dj-avicii-dead-at-28.html",
+   "value": 0.1884892086330935
+  },
+  {
+   "source": "uk-43846047",
+   "target": "theresa-may-says-windrush-victims-will-be-paid-...",
+   "value": 0.1853448275862069
+  },
+  {
+   "source": "north-korea-suspends-nuclear-missile-tests",
+   "target": "",
+   "value": 0.16666666666666666
+  },
+  {
+   "source": "north-korea-suspends-nuclear-missile-tests",
+   "target": "#disqus_thread",
+   "value": 0.16666666666666666
+  },
+  {
+   "source": "swedish-dj-avicii-dies-aged-28",
+   "target": "swedish-house-dj-avicii-dead-at-28.html",
+   "value": 0.16565656565656567
+  },
+  {
+   "source": "",
+   "target": "#disqus_thread",
    "value": 1.0
   },
   {
-   "source": "http://www.breitbart.com/video/2018/04/20/ann-coulter-not-sure-trust-james-comey-reliable-narrator-gigantic-pompous-fruitcake/",
-   "target": "http://www.breitbart.com/video/2018/04/20/ann-coulter-not-sure-trust-james-comey-reliable-narrator-gigantic-pompous-fruitcake/#disqus_thread",
+   "source": "",
+   "target": "#disqus_thread",
    "value": 1.0
   }
  ]

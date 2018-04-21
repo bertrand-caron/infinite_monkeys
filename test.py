@@ -4,6 +4,7 @@ from itertools import combinations, groupby, chain
 from json import loads, dumps
 import unittest
 from numpy import average
+from os.path import basename
 
 with open('scraped_articles.json') as fh:
     data = loads(fh.read())
@@ -47,23 +48,30 @@ def article_similarity_v_1(article: str, _article: str) -> float:
         ]
     )
 
-SIMILARITY_THRESHOLD = 0.3
+SIMILARITY_THRESHOLD = 0.16
 
 similarity_matrix_dict = {
     (article['link'], _article['link']): article_similarity_v_1(article, _article)
     for (article, _article) in combinations(all_articles, r=2)
 }
 
+def truncate_link(link: str, max_length: int = 50) -> str:
+    link_basename = basename(link)
+    if len(link_basename) <= max_length:
+        return link_basename
+    else:
+        return link_basename[:max_length - 3] + '...'
+
 with open('news_articles_.json', 'wt') as fh:
     fh.write(
         dumps(
             {
                 'nodes': [
-                    {'id': article['link'], 'group': 1}
+                    {'id': truncate_link(article['link']), 'group': 1}
                     for article in all_articles
                 ],
                 'links': [
-                    {'source': article, 'target': _article, 'value': similarity_score}
+                    {'source': truncate_link(article), 'target': truncate_link(_article), 'value': similarity_score}
                     for ((article, _article), similarity_score) in similarity_matrix_dict.items()
                     if similarity_score >= SIMILARITY_THRESHOLD
                 ],
