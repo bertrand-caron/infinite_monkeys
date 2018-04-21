@@ -55,7 +55,7 @@ for company, value in companies.items():
                     print(e)
                     print("continuing...")
                     continue
-                article['title'] = content.title
+                article['title'] = content.title or entry.title
                 article['text'] = content.text
                 newsPaper['articles'].append(article)
                 print(count, "articles downloaded from", company, ", url: ", entry.link)
