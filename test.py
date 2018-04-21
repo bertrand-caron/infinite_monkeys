@@ -4,11 +4,11 @@ from itertools import combinations, groupby, chain
 from json import loads, dumps
 import unittest
 from numpy import average
-from os.path import basename
+from os.path import basename, dirname
 from pprint import pprint
 from operator import itemgetter
 
-DEBUG = True
+DEBUG = False
 
 def article_similarity_v_0(article: str, _article: str) -> float:
     return 1.0 if article == _article else 0.0
@@ -46,7 +46,14 @@ def article_similarity_v_2(article_word_dict: str, _article_word_dict: str) -> f
         return -1000.
 
 def truncate_link(link: str, max_length: int = 50) -> str:
-    link_basename = basename(link)
+    return link
+    if link.endswith('/'):
+        link = link[:-1]
+    if link.endswith('index.html'):
+        link_basename = basename(dirname(link))
+    else:
+        link_basename = basename(link)
+
     if len(link_basename) <= max_length:
         return link_basename
     else:
@@ -56,14 +63,24 @@ if __name__ == '__main__':
     with open('scraped_articles.json') as fh:
         data = loads(fh.read())
 
-    all_articles = reduce(
-        lambda acc, e: acc + e,
-        [
-            newspaper_dict['articles']
-            for newspaper, newspaper_dict in data['newspapers'].items()
-        ],
-        []
+    all_articles = list(
+        {
+            article['link']: article
+            for article in reduce(
+                lambda acc, e: acc + e,
+                [
+                    newspaper_dict['articles']
+                    for newspaper, newspaper_dict in data['newspapers'].items()
+                ],
+                []
+            )
+        }.values(),
     )
+
+    article_title_for = {
+        article['link']: article['title']
+        for article in all_articles
+    }
 
     keyword_frequency_for_link = {
         article['link']: get_keyword_frequency(article['text'])
@@ -79,7 +96,7 @@ if __name__ == '__main__':
         pprint([(article, keyword_frequency_for_link[article['link']]) for article in all_articles if article['link'] in BAD_ARTICLE])
         exit()
 
-    SIMILARITY_THRESHOLD = 0.16
+    KEEP_N = 20 
 
     similarity_matrix_dict = {
         (article['link'], _article['link']): article_similarity_v_2(
@@ -89,11 +106,26 @@ if __name__ == '__main__':
         for (article, _article) in combinations(all_articles, r=2)
     }
 
+    similarity_threshold = sorted(
+        similarity_matrix_dict.items(),
+        key=itemgetter(1),
+    )[-KEEP_N][1]
+
     pprint(
         sorted(
             similarity_matrix_dict.items(),
             key=itemgetter(1),
-        )
+        )[-KEEP_N:]
+    )
+
+    links = reduce(
+        lambda acc, e: acc | e,
+        [
+            frozenset((article, _article))
+            for ((article, _article), similarity_score) in similarity_matrix_dict.items()
+            if similarity_score >= similarity_threshold
+        ],
+        frozenset(),
     )
 
     with open('news_articles_.json', 'wt') as fh:
@@ -101,13 +133,14 @@ if __name__ == '__main__':
             dumps(
                 {
                     'nodes': [
-                        {'id': truncate_link(article['link']), 'group': 1}
+                        {'id': truncate_link(article['link']), 'group': 1, 'title': article_title_for[article['link']]}
                         for article in all_articles
+                        if article['link'] in links
                     ],
                     'links': [
                         {'source': truncate_link(article), 'target': truncate_link(_article), 'value': similarity_score}
                         for ((article, _article), similarity_score) in similarity_matrix_dict.items()
-                        if similarity_score >= SIMILARITY_THRESHOLD
+                        if article in links and _article in links and similarity_score >= 0.1
                     ],
                 },
                 indent=True,
