@@ -50,21 +50,5 @@
 	"AssociatedPress": {
 		"rss": "http://hosted.ap.org/lineups/TOPHEADS.rss?SITE=WHIZ&SECTION=HOME",
 		"link": ""
-	},
-	"The Independent": {
-		"rss": "https://www.independent.co.uk/news/rss",
-		"link": "",
-	},
-	"USA today": {
-		"rss": "http://rssfeeds.usatoday.com/usatoday-NewsTopStories",
-		"link": "",
-	},
-	"Huffington post": {
-		"rss": "https://www.huffingtonpost.com/section/front-page/feed",
-		"link": "",
-	},
-	"National Review": {
-		"rss": "https://www.nationalreview.com/feed/",
-		"link": "",
 	}
 }
