@@ -12,6 +12,11 @@
   stroke-width: 1.5px;
 }
 
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+}
+
 </style>
 <svg width="960" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -24,11 +29,15 @@ var svg = d3.select("svg"),
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
 var simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d.id; }))
+    .force("link", d3.forceLink().distance(100).strength(0.5).id(function(d) { return d.id; }))
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-d3.json("news_articles.json", function(error, graph) {
+    function sigmoid(x, k) {
+	        return 1 / (1 + Math.pow(Math.E, -k * (x - 0.5)));
+    }
+
+d3.json("news_articles_.json", function(error, graph) {
   if (error) throw error;
 
   var link = svg.append("g")
@@ -36,13 +45,15 @@ d3.json("news_articles.json", function(error, graph) {
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
-      .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+      .attr("stroke-width", function(d) { return 7 * sigmoid(d.value, 10); });
 
-  var node = svg.append("g")
+  var groups = svg.append("g")
       .attr("class", "nodes")
     .selectAll("circle")
     .data(graph.nodes)
-    .enter().append("circle")
+    .enter().append('g').attr('class', 'label');
+  
+    var node = groups.append("circle")
       .attr("r", 5)
       .attr("fill", function(d) { return color(d.group); })
       .call(d3.drag()
@@ -50,8 +61,9 @@ d3.json("news_articles.json", function(error, graph) {
           .on("drag", dragged)
           .on("end", dragended));
 
-  node.append("title")
-      .text(function(d) { return d.id; });
+  svg.selectAll('.label').append('text').attr("dx", 12).attr("dy", ".35em").text(
+		  function(d){return d.title}
+		  )
 
   simulation
       .nodes(graph.nodes)
@@ -67,9 +79,7 @@ d3.json("news_articles.json", function(error, graph) {
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
 
-    node
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+    groups.attr("transform", positionNode)
   }
 });
 
@@ -88,6 +98,10 @@ function dragended(d) {
   if (!d3.event.active) simulation.alphaTarget(0);
   d.fx = null;
   d.fy = null;
+}
+
+function positionNode(d) {
+  return "translate(" + d.x + "," + d.y + ")";
 }
 
 </script>

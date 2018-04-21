@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import List, Any, Dict
 from multiprocessing import Pool
 from multiprocessing.pool import ThreadPool
+from itertools import starmap
 
 # Set the limit for number of articles to download
 LIMIT = 99999
@@ -45,20 +46,19 @@ def get_articles_from_company(company: str, links_dict: Dict[str, str]) -> Any:
     if 'rss' in links_dict:
         d = fp.parse(links_dict['rss'])
         print("Downloading articles from ", company)
-        with ThreadPool(1) as p:
-            newsPaper = {
-                "rss": links_dict['rss'],
-                "link": links_dict['link'],
-                "articles": list(
-                    filter(
-                        lambda article: article is not None,
-                        p.starmap(
-                            process_rss_entry,
-                            [(entry, company) for (entry, _) in zip(d.entries, range(LIMIT))],
-                        ),
+        newsPaper = {
+            "rss": links_dict['rss'],
+            "link": links_dict['link'],
+            "articles": list(
+                filter(
+                    lambda article: article is not None,
+                    starmap(
+                        process_rss_entry,
+                        [(entry, company) for (entry, _) in zip(d.entries, range(LIMIT))],
                     ),
                 ),
-            }
+            ),
+        }
     else:
         # This is the fallback method if a RSS-feed link is not provided.
         # It uses the python newspaper library to extract articles
