@@ -1,7 +1,7 @@
 from typing import Dict, List
 from functools import reduce
 from itertools import combinations, groupby, chain
-from json import loads
+from json import loads, dumps
 import unittest
 from numpy import average
 
@@ -47,9 +47,27 @@ def article_similarity_v_1(article: str, _article: str) -> float:
         ]
     )
 
-print(
-    {
-        (article['link'], _article['link']): article_similarity_v_1(article, _article)
-        for (article, _article) in combinations(all_articles, r=2)
-    }
-)
+SIMILARITY_THRESHOLD = 0.3
+
+similarity_matrix_dict = {
+    (article['link'], _article['link']): article_similarity_v_1(article, _article)
+    for (article, _article) in combinations(all_articles, r=2)
+}
+
+with open('news_articles_.json', 'wt') as fh:
+    fh.write(
+        dumps(
+            {
+                'nodes': [
+                    {'id': article['link'], 'group': 1}
+                    for article in all_articles
+                ],
+                'links': [
+                    {'source': article, 'target': _article, 'value': similarity_score}
+                    for ((article, _article), similarity_score) in similarity_matrix_dict.items()
+                    if similarity_score >= SIMILARITY_THRESHOLD
+                ],
+            },
+            indent=True,
+        ),
+    )

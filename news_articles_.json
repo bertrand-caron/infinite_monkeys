@@ -1,0 +1,109 @@
+{
+ "nodes": [
+  {
+   "id": "http://edition.cnn.com/2017/03/04/vr/how-to-watch-vr",
+   "group": 1
+  },
+  {
+   "id": "http://edition.cnn.com/videos/world/2018/02/09/yak-tengri-nancy-great-by-design-jlm-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "group": 1
+  },
+  {
+   "id": "http://edition.cnn.com/videos/world/2018/01/26/cybersecurity-great-by-design-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "group": 1
+  },
+  {
+   "id": "http://edition.cnn.com/videos/world/2018/01/18/nomad-clan-great-by-design-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "group": 1
+  },
+  {
+   "id": "http://www.bbc.co.uk/news/world-asia-43846488",
+   "group": 1
+  },
+  {
+   "id": "http://www.bbc.co.uk/news/world-europe-43841194",
+   "group": 1
+  },
+  {
+   "id": "http://www.bbc.co.uk/news/entertainment-arts-43843615",
+   "group": 1
+  },
+  {
+   "id": "http://www.bbc.co.uk/news/uk-43846047",
+   "group": 1
+  },
+  {
+   "id": "https://www.theguardian.com/world/2018/apr/20/north-korea-suspends-nuclear-missile-tests",
+   "group": 1
+  },
+  {
+   "id": "https://www.theguardian.com/uk-news/2018/apr/20/theresa-may-says-windrush-victims-will-be-paid-compensation",
+   "group": 1
+  },
+  {
+   "id": "https://www.theguardian.com/music/2018/apr/20/swedish-dj-avicii-dies-aged-28",
+   "group": 1
+  },
+  {
+   "id": "https://www.theguardian.com/uk-news/2018/apr/20/man-arrested-over-suspected-role-in-hither-green-burglary",
+   "group": 1
+  },
+  {
+   "id": "http://www.breitbart.com/national-security/2018/04/20/north-korean-state-media-claims-shutdown-nuclear-program/",
+   "group": 1
+  },
+  {
+   "id": "http://www.breitbart.com/national-security/2018/04/20/north-korean-state-media-claims-shutdown-nuclear-program/#disqus_thread",
+   "group": 1
+  },
+  {
+   "id": "http://www.breitbart.com/video/2018/04/20/ann-coulter-not-sure-trust-james-comey-reliable-narrator-gigantic-pompous-fruitcake/",
+   "group": 1
+  },
+  {
+   "id": "http://www.breitbart.com/video/2018/04/20/ann-coulter-not-sure-trust-james-comey-reliable-narrator-gigantic-pompous-fruitcake/#disqus_thread",
+   "group": 1
+  },
+  {
+   "id": "https://www.infowars.com/trump-announces-plan-to-build-an-arab-army-so-us-troops-can-leave-syria/",
+   "group": 1
+  },
+  {
+   "id": "https://www.infowars.com/macron-europe-faces-unprecedented-mass-migration-shares-destiny-with-africa/",
+   "group": 1
+  },
+  {
+   "id": "https://www.infowars.com/judge-kimba-wood-orders-trumps-private-files-to-be-distributed-across-federal-server/",
+   "group": 1
+  },
+  {
+   "id": "http://www.foxnews.com/politics/2018/04/20/mccabes-fate-rests-with-trump-appointed-prosecutor.html",
+   "group": 1
+  },
+  {
+   "id": "http://www.foxnews.com/entertainment/2018/04/20/anthony-bourdain-slams-alec-baldwins-take-on-metoo-movement-just-shut-up.html",
+   "group": 1
+  },
+  {
+   "id": "http://www.foxnews.com/entertainment/2018/04/20/swedish-house-dj-avicii-dead-at-28.html",
+   "group": 1
+  }
+ ],
+ "links": [
+  {
+   "source": "http://edition.cnn.com/videos/world/2018/02/09/yak-tengri-nancy-great-by-design-jlm-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "target": "http://edition.cnn.com/videos/world/2018/01/18/nomad-clan-great-by-design-orig-lon.cnn/video/playlists/intl-great-by-design/",
+   "value": 1.0
+  },
+  {
+   "source": "http://www.breitbart.com/national-security/2018/04/20/north-korean-state-media-claims-shutdown-nuclear-program/",
+   "target": "http://www.breitbart.com/national-security/2018/04/20/north-korean-state-media-claims-shutdown-nuclear-program/#disqus_thread",
+   "value": 1.0
+  },
+  {
+   "source": "http://www.breitbart.com/video/2018/04/20/ann-coulter-not-sure-trust-james-comey-reliable-narrator-gigantic-pompous-fruitcake/",
+   "target": "http://www.breitbart.com/video/2018/04/20/ann-coulter-not-sure-trust-james-comey-reliable-narrator-gigantic-pompous-fruitcake/#disqus_thread",
+   "value": 1.0
+  }
+ ]
+}
