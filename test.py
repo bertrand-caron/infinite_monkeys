@@ -1,5 +1,5 @@
 from typing import Dict, List
-from functools import reduce
+from functools import reduce, lru_cache
 from itertools import combinations, groupby, chain
 from json import loads, dumps
 import unittest
@@ -23,19 +23,20 @@ print(all_articles[:5])
 def article_similarity_v_0(article: str, _article: str) -> float:
     return 1.0 if article == _article else 0.0
 
-def article_similarity_v_1(article: str, _article: str) -> float:
-    def get_keyword_frequency(article: str) -> Dict[str, int]:
-        return {
-            word: len(list(group))
-            for (word, group) in groupby(
-                sorted(
-                    article['text'].split()
-                )
+@lru_cache(maxsize=2 * len(all_articles))
+def get_keyword_frequency(article_text: str) -> Dict[str, int]:
+    return {
+        word: len(list(group))
+        for (word, group) in groupby(
+            sorted(
+                article_text.split()
             )
-        }
+        )
+    }
 
+def article_similarity_v_1(article: str, _article: str) -> float:
     keywords, _keywords = map(
-        get_keyword_frequency,
+        lambda article: get_keyword_frequency(article['text']),
         (article, _article),
     )
 

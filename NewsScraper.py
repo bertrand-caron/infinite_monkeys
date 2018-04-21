@@ -8,6 +8,8 @@ from datetime import datetime
 # Set the limit for number of articles to download
 LIMIT = 4
 
+KEEP_ARTICLES_WITH_NO_DATE = True
+
 data = {}
 data['newspapers'] = {}
 
@@ -77,7 +79,7 @@ for company, value in companies.items():
                 continue
             # Again, for consistency, if there is no found publish date the article will be skipped.
             # After 10 downloaded articles from the same newspaper without publish date, the company will be skipped.
-            if content.publish_date is None:
+            if not KEEP_ARTICLES_WITH_NO_DATE and content.publish_date is None:
                 print(count, " Article has date of type None...")
                 noneTypeCount = noneTypeCount + 1
                 if noneTypeCount > 10:
@@ -90,7 +92,10 @@ for company, value in companies.items():
             article['title'] = content.title
             article['text'] = content.text
             article['link'] = content.url
-            article['published'] = content.publish_date.isoformat()
+            try:
+                article['published'] = content.publish_date.isoformat()
+            except:
+                article['published'] = None
             newsPaper['articles'].append(article)
             print(count, "articles downloaded from", company, " using newspaper, url: ", content.url)
             count = count + 1
