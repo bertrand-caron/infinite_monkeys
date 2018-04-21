@@ -5,6 +5,7 @@ from newspaper import Article
 from time import mktime
 from datetime import datetime
 from typing import List, Any, Dict
+from multiprocessing import Pool
 
 # Set the limit for number of articles to download
 LIMIT = 4
@@ -102,10 +103,18 @@ if __name__ == '__main__':
     with open('NewsPapers.json') as data_file:
         companies = json.load(data_file)
 
+    ordered_companies = list(companies.keys())
+
+    with Pool(10) as p:
+        articles_for_company = p.starmap(
+            get_articles_from_company,
+            companies.items(),
+        )
+
     data = {
         'newspapers': {
-            company: get_articles_from_company(company, links)
-            for (company, links) in companies.items()
+            company: articles
+            for (company, articles) in zip(ordered_companies, articles_for_company)
         }
     }
 
