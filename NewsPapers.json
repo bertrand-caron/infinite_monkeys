@@ -3,11 +3,9 @@
 		"link": "http://edition.cnn.com/"
 	},
 	"bbc": {
-		"rss": "http://feeds.bbci.co.uk/news/rss.xml",
 		"link": "http://www.bbc.com/"
 	},
 	"theguardian": {
-		"rss": "https://www.theguardian.com/uk/rss",
 		"link": "https://www.theguardian.com/international"
 	},
   "breitbart": {
@@ -23,7 +21,27 @@
     "link": "http://www.nbcnews.com/"
   },
   "washingtonpost": {
-    "rss": "http://feeds.washingtonpost.com/rss/world",
     "link": "https://www.washingtonpost.com/"
-  }
+  },
+	"cbsnews": {
+		"link": "https://www.cbsnews.com"
+	},
+	"abcnews": {
+		"link": "http://www.abc.net.au"
+	},
+	"rtnews": {
+		"link": "https://www.rt.com"
+	},
+	"canoe":  {
+		"link": "http://www.canoe.com"
+	},
+	"RussianNewsAgency": {
+		"link": "http://www.tass.com"
+	},
+	"Sputnik": {
+		"link": "https://www.sputniknews.com"
+	},
+	"AssociatedPress": {
+		"link": "https://apnews.com"
+	}
 }
