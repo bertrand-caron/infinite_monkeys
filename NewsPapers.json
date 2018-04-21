@@ -1,47 +1,54 @@
 {
 	"cnn": {
-		"link": "http://edition.cnn.com/"
+		"rss": "http://rss.cnn.com/rss/edition.rss/",
+		"link": ""
 	},
 	"bbc": {
-		"link": "http://www.bbc.com/"
+		"rss": "http://feeds.bbci.co.uk/news/rss.xml",
+		"link": ""
 	},
 	"theguardian": {
-		"link": "https://www.theguardian.com/international"
+		"rss": "https://www.theguardian.com/world/rss",
+		"link": ""
 	},
   "breitbart": {
-    "link": "http://www.breitbart.com/"
-  },
-  "infowars": {
-    "link": "https://www.infowars.com/"
+    "rss": "http://feeds.feedburner.com/breitbart?format=xml",
+		"link": ""
   },
   "foxnews": {
-    "link": "http://www.foxnews.com/"
+    "rss": "http://feeds.foxnews.com/foxnews/latest?format=xml",
+		"link": ""
   },
   "nbcnews": {
-    "link": "http://www.nbcnews.com/"
+    "rss": "https://www.nbcnewyork.com/news/top-stories/?rss=y&embedThumb=y&summary=y",
+		"link": ""
   },
   "washingtonpost": {
-    "link": "https://www.washingtonpost.com/"
+    "rss": "http://washingtonpost.com/rss/politics",
+		"link": ""
   },
 	"cbsnews": {
-		"link": "https://www.cbsnews.com"
+		"rss": "https://www.cbsnews.com/latest/rss/main",
+		"link": ""
 	},
 	"abcnews": {
-		"link": "http://www.abc.net.au"
+		"rss": "http://www.abc.net.au/news/feed/45910/rss.xml",
+		"link": ""
 	},
 	"rtnews": {
-		"link": "https://www.rt.com"
+		"rss": "https://www.rt.com/rss/",
+		"link": ""
 	},
 	"canoe":  {
-		"link": "http://www.canoe.com"
-	},
-	"RussianNewsAgency": {
-		"link": "http://www.tass.com"
+		"rss": "http://canoe.com/feed/",
+		"link": ""
 	},
 	"Sputnik": {
-		"link": "https://www.sputniknews.com"
+		"rss": "https://sputniknews.com/export/rss2/archive/index.xml",
+		"link": ""
 	},
 	"AssociatedPress": {
-		"link": "https://apnews.com"
+		"rss": "http://hosted.ap.org/lineups/TOPHEADS.rss?SITE=WHIZ&SECTION=HOME",
+		"link": ""
 	}
 }
