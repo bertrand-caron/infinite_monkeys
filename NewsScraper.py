@@ -54,7 +54,7 @@ def get_articles_from_company(company: str, links_dict: Dict[str, str]) -> Any:
                         lambda article: article is not None,
                         p.starmap(
                             process_rss_entry,
-                            [(entry, company) for entry in d.entries],
+                            [(entry, company) for (entry, _) in zip(d.entries, range(LIMIT))],
                         ),
                     ),
                 ),
