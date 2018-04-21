@@ -35,13 +35,13 @@ for company, value in companies.items():
         for entry in d.entries:
             # Check if publish date is provided, if no the article is skipped.
             # This is done to keep consistency in the data and to keep the script from crashing.
-            if hasattr(entry, 'published'):
+            if KEEP_ARTICLES_WITH_NO_DATE or (not KEEP_ARTICLES_WITH_NO_DATE and hasattr(entry, 'published')):
                 if count > LIMIT:
                     break
                 article = {}
                 article['link'] = entry.link
-                date = entry.published_parsed
                 try:
+                    date = entry.published_parsed
                     article['published'] = datetime.fromtimestamp(mktime(date)).isoformat()
                 except:
                     article['published'] = None
