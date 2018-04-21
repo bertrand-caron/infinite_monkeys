@@ -4,32 +4,24 @@ import newspaper
 from newspaper import Article
 from time import mktime
 from datetime import datetime
+from typing import List, Any, Dict
 
 # Set the limit for number of articles to download
 LIMIT = 4
 
 KEEP_ARTICLES_WITH_NO_DATE = True
 
-data = {}
-data['newspapers'] = {}
-
-# Loads the JSON files with news sites
-with open('NewsPapers.json') as data_file:
-    companies = json.load(data_file)
-
-count = 1
-
-# Iterate through each news company
-for company, value in companies.items():
+def get_articles_from_company(company: str, links_dict: Dict[str, str]) -> Any:
+    count = 1
     # If a RSS link is provided in the JSON file, this will be the first choice.
     # Reason for this is that, RSS feeds often give more consistent and correct data.
     # If you do not want to scrape from the RSS-feed, just leave the RSS attr empty in the JSON file.
-    if 'rss' in value:
-        d = fp.parse(value['rss'])
+    if 'rss' in links_dict:
+        d = fp.parse(links_dict['rss'])
         print("Downloading articles from ", company)
         newsPaper = {
-            "rss": value['rss'],
-            "link": value['link'],
+            "rss": links_dict['rss'],
+            "link": links_dict['link'],
             "articles": []
         }
         for entry in d.entries:
@@ -64,9 +56,9 @@ for company, value in companies.items():
         # This is the fallback method if a RSS-feed link is not provided.
         # It uses the python newspaper library to extract articles
         print("Building site for ", company)
-        paper = newspaper.build(value['link'], memoize_articles=False)
+        paper = newspaper.build(links_dict['link'], memoize_articles=False)
         newsPaper = {
-            "link": value['link'],
+            "link": links_dict['link'],
             "articles": []
         }
         noneTypeCount = 0
@@ -103,16 +95,24 @@ for company, value in companies.items():
             print(count, "articles downloaded from", company, " using newspaper, url: ", content.url)
             count = count + 1
             noneTypeCount = 0
-    count = 1
-    data['newspapers'][company] = newsPaper
+    return newsPaper
 
-# Finally it saves the articles as a JSON-file.
-try:
-    with open('scraped_articles.json', 'w') as outfile:
-        json.dump(data, outfile)
-except Exception as e: print(e)
+if __name__ == '__main__':
+    # Loads the JSON files with news sites
+    with open('NewsPapers.json') as data_file:
+        companies = json.load(data_file)
 
+    data = {
+        'newspapers': {
+            company: get_articles_from_company(company, links)
+            for (company, links) in companies.items()
+        }
+    }
 
-
-
-
+    # Finally it saves the articles as a JSON-file.
+    try:
+        with open('scraped_articles.json', 'w') as outfile:
+            json.dump(data, outfile)
+    except Exception as e:
+        print(e)
+        raise
