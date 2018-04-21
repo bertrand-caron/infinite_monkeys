@@ -9,7 +9,7 @@ from multiprocessing import Pool
 from multiprocessing.pool import ThreadPool
 
 # Set the limit for number of articles to download
-LIMIT = 4
+LIMIT = 99999
 
 KEEP_ARTICLES_WITH_NO_DATE = True
 
@@ -45,7 +45,7 @@ def get_articles_from_company(company: str, links_dict: Dict[str, str]) -> Any:
     if 'rss' in links_dict:
         d = fp.parse(links_dict['rss'])
         print("Downloading articles from ", company)
-        with ThreadPool(10) as p:
+        with ThreadPool(1) as p:
             newsPaper = {
                 "rss": links_dict['rss'],
                 "link": links_dict['link'],
