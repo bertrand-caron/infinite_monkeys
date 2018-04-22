@@ -20,12 +20,12 @@ The data gathering code is based on [NewsScraper](https://github.com/holwech/New
 
 ## Analysis
 
-> def article_similarity_v_2(article_word_dict: str, _article_word_dict: str) -> float:
->    word_set, _word_set = map(set, (article_word_dict, _article_word_dict))
->    try:
->        return len(word_set & _word_set) / len(word_set | _word_set)
->    except ZeroDivisionError:
-> return -1000.
+> def article_similarity_v_2(article_word_dict: str, _article_word_dict: str) -> float:    
+>    word_set, _word_set = map(set, (article_word_dict, _article_word_dict))  
+>    try:  
+>        return len(word_set & _word_set) / len(word_set | _word_set)  
+>    except ZeroDivisionError:  
+> return -1000.  
 
 ## Visualisation
 
