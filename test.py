@@ -63,6 +63,9 @@ if __name__ == '__main__':
     with open('scraped_articles.json') as fh:
         data = loads(fh.read())
 
+    with open('articles_V2.json') as fh:
+        data_V2 = loads(fh.read())
+
     all_articles = list(
         {
             article['link']: article
@@ -73,7 +76,7 @@ if __name__ == '__main__':
                     for newspaper, newspaper_dict in data['newspapers'].items()
                 ],
                 []
-            )
+            ) + data_V2
         }.values(),
     )
 
@@ -96,7 +99,8 @@ if __name__ == '__main__':
         pprint([(article, keyword_frequency_for_link[article['link']]) for article in all_articles if article['link'] in BAD_ARTICLE])
         exit()
 
-    KEEP_N = 20 
+    KEEP_N = 50
+    THRESHOLD = 0.3
 
     similarity_matrix_dict = {
         (article['link'], _article['link']): article_similarity_v_2(
@@ -105,6 +109,13 @@ if __name__ == '__main__':
         )
         for (article, _article) in combinations(all_articles, r=2)
     }
+
+    similarity_matrix_dict = dict(
+        filter(
+            lambda I: I[1] != 1.0,
+            similarity_matrix_dict.items(),
+        ),
+    )
 
     similarity_threshold = sorted(
         similarity_matrix_dict.items(),
@@ -128,19 +139,46 @@ if __name__ == '__main__':
         frozenset(),
     )
 
+    on_journal = lambda article_link: article_link.split('://')[1].split('/')[0]
+
+    journal_colors = {
+        key: i
+        for (i, (key, group)) in enumerate(
+            groupby(
+                sorted(
+                    links,
+                    key=on_journal,
+                ),
+                key=on_journal,
+            )
+        )
+    }
+
+    colors = {
+        article_link: journal_colors[on_journal(article_link)]
+        for article_link in journal_colors
+    }
+
+    with open('journals.json', 'wt') as fh:
+        fh.write(
+            dumps(
+                journal_colors,
+            ),
+        )
+
     with open('news_articles_.json', 'wt') as fh:
         fh.write(
             dumps(
                 {
                     'nodes': [
-                        {'id': truncate_link(article['link']), 'group': 1, 'title': article_title_for[article['link']]}
+                        {'id': truncate_link(article['link']), 'group': colors[article['link']], 'title': article_title_for[article['link']]}
                         for article in all_articles
                         if article['link'] in links
                     ],
                     'links': [
                         {'source': truncate_link(article), 'target': truncate_link(_article), 'value': similarity_score}
                         for ((article, _article), similarity_score) in similarity_matrix_dict.items()
-                        if article in links and _article in links and similarity_score >= 0.1
+                        if article in links and _article in links and similarity_score >= THRESHOLD
                     ],
                 },
                 indent=True,
