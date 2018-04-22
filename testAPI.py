@@ -1,6 +1,6 @@
 from newsapi import NewsApiClient
 from sys import argv
-from newspaper import Article, fulltext
+from newspaper import fulltext
 from requests import get
 from json import dumps
 
