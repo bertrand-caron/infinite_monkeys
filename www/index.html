@@ -10,62 +10,79 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="main.css">
     <title>Infinite Monkeys</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
-  <div id='images'>
-    <img id='teamLogo' src="IM_logo_2.jpg" height="400" alt="Infinite Monkeys" >
-    <img id='freedomLogo' src="ifh_logo_square.png" height="400" alt="Internet Freedom Hackathon" >
+  <div class='image'>
+    <img id='teamLogo' src="IM_logo_2.jpg" height="400" alt="Infinite Monkeys">
   </div>
-
-<div id='bodyText'>
-  <div class="group">
-    <h2>The Problem</h2>
-    <p>
-    A key aspect of evaluating news is determining its source. Primary sources, the original eyewitness reports of an event, should take priority over secondary sources (reports by others based on previous accounts). Identifying sources is also helpful for determining the likely biases that shape particular news reports. As the news source is important for verifying its credibility, those with an interest in promoting a specific interpretation of events may obscure the original source of news it promotes. <br><br>
-    While we would expect some similarity between accounts of the same event, identical or highly similar news articles appearing in multiple sources (almost) simultaneously without a common attribution suggests a common link between these sources. This source may be content from an attributed common supplier (such as news agencies like the Associated Press (AP), Reuters, and Agence France-Presse (AFP)) or a hidden common source, such as an organised misinformation or propaganda campaign.
-    </p>
-  </div>
-  <div class="group">
-    <h2>Our Response</h2>
-    <p>
-    Our project addresses these concerns by searching for similarities between news stories.
-    Extensive amounts of common text within news articles from different sources suggests that the stories have a common origin. By comparing the publishing times of news stories, we can track the spread of a common news item across different sources, and hopefully identify its original source.
-    </p>
-  </div>
-  <div class="group">
-    <h2><a href="http://infinitemonkeys.hasit.com.au/D3/">Visualisation</a></h2  >
-  </div>
-  <div class="group">
-    <h2>The Project</h2>
-    <p>
-      The project has three components: data gathering, analysis, and visualisation.
-    </p>
-  </div>
-  <div class="group">
-    <h2>Data Gathering</h2>
-    <p>
-    The data source used is News API, which gathers data from over 30,000 sources.
-    The data gathering code is based on NewsScraper.
-    </p>
-  </div>
-  <div class="group">
-    <h2>Analysis</h2>
-    <p>
-    How are we comparing news articles for similarities?
-    </p>
-  </div>
-  <div class="group">
-    <h2>Visualisation - How are we displaying our data analysis?</h2>
-    <p>
-      Our data visualisation uses the D3 JavaScript framework.
-    </p>
-  </div>
-  <div class="group">
-    <h1>Why 'Infinite Monkeys'?</h1>
-    <p>
-      The project name comes from the adage that an infinite number of monkeys
-      typing at an infinite number of typewriters will produce the works of Shakespeare.
-    </p>
+  <div id='bodyText'>
+    <div class="group">
+      <h2>The Problem</h2>
+      <p>
+      A key aspect of evaluating news is determining its source. Primary sources, the original eyewitness reports of an event, should take priority over secondary sources (reports by others based on previous accounts). Identifying sources is also helpful for determining the likely biases that shape particular news reports. As the news source is important for verifying its credibility, those with an interest in promoting a specific interpretation of events may obscure the original source of news it promotes. <br><br>
+      While we would expect some similarity between accounts of the same event, identical or highly similar news articles appearing in multiple sources (almost) simultaneously without a common attribution suggests a common link between these sources. This source may be content from an attributed common supplier (such as news agencies like the Associated Press (AP), Reuters, and Agence France-Presse (AFP)) or a hidden common source, such as an organised misinformation or propaganda campaign.
+      </p>
+    </div>
+    <div class="group">
+      <h2>Our Response</h2>
+      <p>
+      Our project addresses these concerns by searching for similarities between news stories.
+      Extensive amounts of common text within news articles from different sources suggests that the stories have a common origin. By comparing the publishing times of news stories, we can track the spread of a common news item across different sources, and hopefully identify its original source.
+      </p>
+    </div>
+    <div class="group">
+      <h2><a href="http://infinitemonkeys.hasit.com.au/D3/">Visualisation</a></h2  >
+    </div>
+    <div class="group">
+      <h2>The Project</h2>
+      <p>
+        The project has three components: data gathering, analysis, and visualisation.
+      </p>
+    </div>
+    <div class="group">
+      <h2>Data Gathering</h2>
+      <p>
+      The data source used is News API, which gathers data from over 30,000 sources.
+      The data gathering code is based on NewsScraper.
+      </p>
+    </div>
+    <div class="group">
+      <h2>Analysis</h2>
+      <p id="code">
+      def article_similarity_v_2(article_word_dict: str, _article_word_dict: str) -> float: <br>
+      word_set, _word_set = map(set, (article_word_dict, _article_word_dict)) <br>
+      try: <br>
+      return len(word_set & _word_set) / len(word_set | _word_set) <br>
+      except ZeroDivisionError: <br>
+      return -1000. <br>
+      </p>
+    </div>
+    <div class="group">
+      <h2>Visualisation - How are we displaying our data analysis?</h2>
+      <p>
+        Our data visualisation uses the D3 JavaScript framework.
+      </p>
+    </div>
+    <div class="group">
+      <h1>Why 'Infinite Monkeys'?</h1>
+      <p>
+        The project name comes from the adage that an infinite number of monkeys
+        typing at an infinite number of typewriters will produce the works of Shakespeare.
+      </p>
+    </div>
+    <div class="group">
+      <p><a href="https://newsapi.org">Powered by News API</a></p>
+    </div>
+    <div class="group">
+      <h3>
+        <a href="https://github.com/bertrand-caron/infinite_monkeys"> Github Links</a>
+        <br>
+        <a href="http://infinitemonkeys.hasit.com.au/monkeyParty.html"> Monkey Links</a>
+      </h3>
+    </div>
+  <div class="image">
+    <img id='freedomLogo' src="ifh_logo_square.png" height="400" alt="Internet Freedom Hackathon">
   </div>
 </div>
 </body>
