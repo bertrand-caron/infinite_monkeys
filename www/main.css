@@ -1,5 +1,10 @@
 html {
   height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+#code {
+  font-style: italic;
 }
 
 .group {
@@ -8,28 +13,21 @@ html {
   padding-right: 30px;
   padding-bottom: 5px;
   padding-top: 1px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   margin-top: 5px;
+  border-radius: 20px;
 }
 
 body {
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 2%;
   width: 75%;
 }
 
-#teamLogo {
-  float:left;
-}
-
-#freedomLogo {
-  padding-left: 150px;
-  float: right;
-}
-
-#images {
-  display: inline-block;
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 p {
