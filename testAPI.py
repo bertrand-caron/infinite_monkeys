@@ -24,20 +24,25 @@ def get_article(i:int, article: Any) -> Any:
     print('Article number: {0}'.format(i))
     return article_dict
 
-def main(query: str):
+def main(query: str = None, max_page: int = 4, page_size: int = 100):
     newsapi = NewsApiClient(api_key='<api key>')
 
-    articleList = newsapi.get_top_headlines(
-        q=query,
-        language='en',
-        page_size=100,
-    )['articles']
+    article_dicts = []
+    for page in range(1, max_page + 1):
+        articleList = newsapi.get_top_headlines(
+            language='en',
+            page_size=page_size,
+            page=page,
+        )['articles']
 
-    with Pool(25) as p:
-        article_dicts = p.starmap(
-            get_article,
-            enumerate(articleList)
-        )
+        if len(articleList) == 0 or len(article_dicts) >= max_page * page_size:
+            break
+
+        with Pool(25) as p:
+            article_dicts += p.starmap(
+                get_article,
+                enumerate(articleList, start=len(article_dicts))
+            )
 
     with open('articles_V2.json', 'wt') as fh:
         fh.write(dumps(article_dicts))
