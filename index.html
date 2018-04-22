@@ -22,10 +22,15 @@
   font: 9px sans-serif;
 }
 
+.h3 {
+margin-left:40px;
+}
+
 </style>
 <body>
   <div id='legend'></div>
-  <svg width="1280" height="700" viewport-fill="red"></svg>
+  <h3>Infinite Monkeys - Current Headlines</h3>
+  <svg width="1250" height="600" viewport-fill="red"></svg>
 </body>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
@@ -35,6 +40,8 @@ var svg = d3.select("svg"),
     height = +svg.attr("height");
 
 var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+svg.append('rect').attr('x', 0).attr('y', 0).attr('height', 600).attr('width', 1250).attr('fill', 'none').attr('stroke', 'black');
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().distance(100).strength(0.5).id(function(d) { return d.id; }))
