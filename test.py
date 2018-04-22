@@ -59,7 +59,7 @@ def truncate_link(link: str, max_length: int = 50) -> str:
     else:
         return link_basename[:max_length - 3] + '...'
 
-if __name__ == '__main__':
+def main():
     with open('scraped_articles.json') as fh:
         data = loads(fh.read())
 
@@ -69,14 +69,18 @@ if __name__ == '__main__':
     all_articles = list(
         {
             article['link']: article
-            for article in reduce(
-                lambda acc, e: acc + e,
-                [
-                    newspaper_dict['articles']
-                    for newspaper, newspaper_dict in data['newspapers'].items()
-                ],
-                []
-            ) + data_V2
+            for article in (
+#                reduce(
+#                    lambda acc, e: acc + e,
+#                    [
+#                        newspaper_dict['articles']
+#                        for newspaper, newspaper_dict in data['newspapers'].items()
+#                    ],
+#                    []
+#                )
+#                +
+                data_V2
+            )
         }.values(),
     )
 
@@ -100,7 +104,7 @@ if __name__ == '__main__':
         exit()
 
     KEEP_N = 50
-    THRESHOLD = 0.3
+    THRESHOLD = 0.25
 
     similarity_matrix_dict = {
         (article['link'], _article['link']): article_similarity_v_2(
@@ -139,7 +143,18 @@ if __name__ == '__main__':
         frozenset(),
     )
 
-    on_journal = lambda article_link: article_link.split('://')[1].split('/')[0]
+    def on_journal(article_link: str) -> str:
+        try:
+            _, url = article_link.split('://')
+            base_url, *_ = url.split('/')
+            return base_url
+        except:
+            raise Exception('In: {0}'.format(article_link))
+
+    assert all('://' in article['link'] for article in all_articles), [
+        (article['link'],) for article in all_articles
+        if '://' not in article['link']
+    ]
 
     journal_colors = {
         key: i
@@ -156,7 +171,7 @@ if __name__ == '__main__':
 
     colors = {
         article_link: journal_colors[on_journal(article_link)]
-        for article_link in journal_colors
+        for article_link in links
     }
 
     with open('journals.json', 'wt') as fh:
@@ -164,6 +179,11 @@ if __name__ == '__main__':
             dumps(
                 journal_colors,
             ),
+        )
+
+    with open('journals.html', 'wt') as fh:
+        fh.write(
+            ''.join(['<p>{0}: {1}</p>'.format(journal, journal_color) for (journal, journal_color) in journal_colors.items()])
         )
 
     with open('news_articles_.json', 'wt') as fh:
@@ -184,3 +204,6 @@ if __name__ == '__main__':
                 indent=True,
             ),
         )
+
+if __name__ == '__main__':
+    main()

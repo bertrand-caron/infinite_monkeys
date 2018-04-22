@@ -6,10 +6,6 @@ from json import dumps
 from multiprocessing import Pool
 from typing import Any
 
-newsapi = NewsApiClient(api_key='<api key>')
-
-articleList = newsapi.get_top_headlines(q="Trump", language='en', page_size=100)['articles']
-
 def get_article(i:int, article: Any) -> Any:
     linkText = get(article['url'], headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'})
 
@@ -28,11 +24,19 @@ def get_article(i:int, article: Any) -> Any:
     print('Article number: {0}'.format(i))
     return article_dict
 
-with Pool(25) as p:
-    article_dicts = p.starmap(
-        get_article,
-        enumerate(articleList)
-    )
+def main():
+    newsapi = NewsApiClient(api_key='<api key>')
 
-with open('articles_V2.json', 'wt') as fh:
-    fh.write(dumps(article_dicts))
+    articleList = newsapi.get_top_headlines(q="Trump", language='en', page_size=100)['articles']
+
+    with Pool(25) as p:
+        article_dicts = p.starmap(
+            get_article,
+            enumerate(articleList)
+        )
+
+    with open('articles_V2.json', 'wt') as fh:
+        fh.write(dumps(article_dicts))
+
+if __name__ == '__main__':
+    main()
