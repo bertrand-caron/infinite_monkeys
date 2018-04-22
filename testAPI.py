@@ -30,6 +30,7 @@ while articleHasText == True:
                 'link': article['url'],
                 'title': article['title'],
                 'text': articleText,
+                'date': article['publishedAt']
             }
 
             article_dicts.append(article_dict)
