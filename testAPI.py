@@ -25,7 +25,7 @@ def get_article(i:int, article: Any) -> Any:
     return article_dict
 
 def main(query: str = None, max_page: int = 4, page_size: int = 100):
-    newsapi = NewsApiClient(api_key='ddac6b98882444029f877e86e6614a6a')
+    newsapi = NewsApiClient(api_key='INSERT_KEY_HERE')
 
     article_dicts = []
     for page in range(1, max_page + 1):
