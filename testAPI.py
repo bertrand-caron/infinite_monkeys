@@ -24,10 +24,14 @@ def get_article(i:int, article: Any) -> Any:
     print('Article number: {0}'.format(i))
     return article_dict
 
-def main():
+def main(query: str):
     newsapi = NewsApiClient(api_key='ddac6b98882444029f877e86e6614a6a')
 
-    articleList = newsapi.get_top_headlines(q="Trump", language='en', page_size=100)['articles']
+    articleList = newsapi.get_top_headlines(
+        q=query,
+        language='en',
+        page_size=100,
+    )['articles']
 
     with Pool(25) as p:
         article_dicts = p.starmap(
@@ -39,4 +43,4 @@ def main():
         fh.write(dumps(article_dicts))
 
 if __name__ == '__main__':
-    main()
+    main('Trump')
