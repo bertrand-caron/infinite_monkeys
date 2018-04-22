@@ -34,3 +34,5 @@ Our data visualisation uses the [D3](www.d3js.org) JavaScript framework. Article
 # "Infinite Monkeys?"
 
 The project name comes from the adage that an infinite number of monkeys typing at an infinite number of typewriters will produce the works of Shakespeare. 
+
+This project began at the [2018 Brisbane Internet Freedom Hack: Defending Truth](https://internetfreedomhack.org/brisbane).
