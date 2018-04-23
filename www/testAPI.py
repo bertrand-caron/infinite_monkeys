@@ -9,7 +9,11 @@ articleCount = 0
 articleHasText = True
 articleMaxRange = 3
 
+<<<<<<< HEAD
 newsapi = NewsApiClient(api_key='ddac6b98882444029f877e86e6614a6a')
+=======
+newsapi = NewsApiClient(api_key='INSERT_KEY_HERE')
+>>>>>>> 741ff0e9a063d97b2f5f2d5d8ee58e56903efc47
 
 articleList = newsapi.get_top_headlines(language='en', page_size=100)['articles']
 
