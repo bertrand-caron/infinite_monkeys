@@ -10,7 +10,7 @@ Our project addresses these concerns by searching for similarities between news 
 
 # The Project
 
-The project has three components: data gathering, analysis, and visualisation. It has a Python 3 backend that gathers the data and performs the analysis, and a JavaScript frontend that displays the results. It requires the Python 3 libraries `numpy`, `feedparser`, and `newspaper3k`. To run it locally, first you need to either create a list of RSS feeds in a JSON file named `NewsPapers.json` or get an API key to use [News API](https://newsapi.org/) and add the key to the `testAPI.py` file where it says '`INSERT_KEY_HERE`.
+The project has three components: data gathering, analysis, and visualisation.
 
 ## Data Gathering
 
@@ -20,12 +20,17 @@ The data gathering code is based on [NewsScraper](https://github.com/holwech/New
 
 ## Analysis
 
-> def article_similarity_v_2(article_word_dict: str, _article_word_dict: str) -> float:    
->    word_set, _word_set = map(set, (article_word_dict, _article_word_dict))  
->    try:  
->        return len(word_set & _word_set) / len(word_set | _word_set)  
->    except ZeroDivisionError:  
-> return -1000.  
+    def article_similarity_v_2(article_word_dict: Dict[str, int], _article_word_dict: Dict[str, int]) -> float:
+        '''
+        Given two word distributions, return the percentage of words present in both distributions.
+    
+        '''
+        word_set, _word_set = map(set, (article_word_dict, _article_word_dict))
+        try:
+            return len(word_set & _word_set) / len(word_set | _word_set)
+        except ZeroDivisionError:
+            # Case where both articles are empty
+            return 0.0
 
 ## Visualisation
 
