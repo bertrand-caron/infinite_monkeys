@@ -10,7 +10,7 @@ Our project addresses these concerns by searching for similarities between news 
 
 # The Project
 
-The project has three components: data gathering, analysis, and visualisation. It has a Python 3 backend that gathers the data and performs the analysis, and a JavaScript frontend that displays the results. It requires the Python 3 libraries `numpy`, `feedparser`, and `newspaper3k`. To run it locally, first you need to either create a list of RSS feeds in a JSON file named `NewsPapers.json` or get an API key to use [News API](https://newsapi.org/) and add the key to the `testAPI.py` where it says '`INSERT_KEY_HERE`.
+The project has three components: data gathering, analysis, and visualisation. It has a Python 3 backend that gathers the data and performs the analysis, and a JavaScript frontend that displays the results. It requires the Python 3 libraries `numpy`, `feedparser`, and `newspaper3k`. To run it locally, first you need to either create a list of RSS feeds in a JSON file named `NewsPapers.json` or get an API key to use [News API](https://newsapi.org/) and add the key to the `testAPI.py` file where it says '`INSERT_KEY_HERE`.
 
 ## Data Gathering
 
