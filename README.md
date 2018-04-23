@@ -10,7 +10,7 @@ Our project addresses these concerns by searching for similarities between news 
 
 # The Project
 
-The project has three components: data gathering, analysis, and visualisation.
+The project has three components: data gathering, analysis, and visualisation. It has a Python 3 backend that gathers the data and performs the analysis, and a JavaScript frontend that displays the results. It requires the Python 3 libraries `numpy`, `feedparser`, and `newspaper3k`. To run it locally, first you need to either create a list of RSS feeds in a JSON file named `NewsPapers.json'.
 
 ## Data Gathering
 
