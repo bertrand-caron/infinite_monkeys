@@ -20,12 +20,17 @@ The data gathering code is based on [NewsScraper](https://github.com/holwech/New
 
 ## Analysis
 
-> def article_similarity_v_2(article_word_dict: str, _article_word_dict: str) -> float:    
->    word_set, _word_set = map(set, (article_word_dict, _article_word_dict))  
->    try:  
->        return len(word_set & _word_set) / len(word_set | _word_set)  
->    except ZeroDivisionError:  
-> return -1000.  
+    def article_similarity_v_2(article_word_dict: Dict[str, int], _article_word_dict: Dict[str, int]) -> float:
+        '''
+        Given two word distributions, return the percentage of words present in both distributions.
+    
+        '''
+        word_set, _word_set = map(set, (article_word_dict, _article_word_dict))
+        try:
+            return len(word_set & _word_set) / len(word_set | _word_set)
+        except ZeroDivisionError:
+            # Case where both articles are empty
+            return 0.0
 
 ## Visualisation
 
