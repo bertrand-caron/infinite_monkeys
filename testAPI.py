@@ -48,4 +48,4 @@ def main(query: str = None, max_page: int = 4, page_size: int = 100):
         fh.write(dumps(article_dicts))
 
 if __name__ == '__main__':
-    main('Trump')
+    main('')

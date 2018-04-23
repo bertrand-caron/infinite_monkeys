@@ -108,7 +108,7 @@ def main():
         pprint([(article, keyword_frequency_for_link[article['link']]) for article in all_articles if article['link'] in BAD_ARTICLE])
         exit()
 
-    KEEP_N = 50
+    KEEP_N = 200
     THRESHOLD = 0.25
 
     similarity_matrix_dict = {
@@ -143,7 +143,11 @@ def main():
         [
             frozenset((article, _article))
             for ((article, _article), similarity_score) in similarity_matrix_dict.items()
+<<<<<<< HEAD
             if similarity_score >= similarity_threshold
+=======
+            if similarity_score >= THRESHOLD
+>>>>>>> origin/Bertrand
         ],
         frozenset(),
     )
