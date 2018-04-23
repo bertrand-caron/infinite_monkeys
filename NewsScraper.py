@@ -10,7 +10,7 @@ from multiprocessing.pool import ThreadPool
 from itertools import starmap
 
 # Set the limit for number of articles to download
-LIMIT = 99999
+LIMIT = 100
 
 KEEP_ARTICLES_WITH_NO_DATE = True
 
