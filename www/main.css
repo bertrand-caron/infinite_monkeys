@@ -1,0 +1,35 @@
+html {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+#code {
+  font-style: italic;
+}
+
+.group {
+  background-color: #ffd6cc;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 5px;
+  padding-top: 1px;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  border-radius: 20px;
+}
+
+body {
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p {
+  text-align: left;
+}
