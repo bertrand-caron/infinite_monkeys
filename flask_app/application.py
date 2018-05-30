@@ -1,5 +1,6 @@
 from typing import Dict, Any
 from traceback import format_exc
+from operator import itemgetter
 from json import loads
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
@@ -17,6 +18,7 @@ class Article(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
     url = db.Column(db.String(250), nullable=False)
+    text = db.Column(db.Text(), nullable=False)
 
     #pairs = db.relationship()
 
@@ -100,19 +102,19 @@ def get_all_article_pairs():
 def add_pair():
     payload = request.get_json(force=True)
 
-    def retrieve_or_create_url(url_str: str) -> Article:
+    def retrieve_or_create_url(url_str: str, text_str) -> Article:
         maybe_url = Article.query.filter(Article.url == url_str).one_or_none()
         if maybe_url is not None:
             return maybe_url
         else:
-            maybe_url = Article(url=url_str)
+            maybe_url = Article(url=url_str, text=text_str)
             db.session.add(maybe_url)
             db.session.flush()
             return maybe_url
 
     articles = [
-        retrieve_or_create_url(url_str)
-        for url_str in map(lambda s: payload[s], ('url', '_url'))
+        retrieve_or_create_url(url_str, text_str)
+        for (url_str, text_str) in [itemgetter(prefix + 'url', prefix + 'text')(payload) for prefix in ('', '_')]
     ]
 
     new_article_pair = Article_Pair(
