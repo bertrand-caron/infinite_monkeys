@@ -5,6 +5,7 @@ from json import loads
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from similarity import get_word_frequency, article_similarity
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -122,7 +123,9 @@ def add_pair():
             ('article_id', '_article_id'),
             sorted([article.id for article in articles]),
         )),
-        score=0.0,
+        score=article_similarity(
+            *map(lambda article: get_word_frequency(article.text), articles)
+        ),
     )
 
     db.session.add(new_article_pair)
