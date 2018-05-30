@@ -1,0 +1,9 @@
+coverage==4.0.3
+Flask==0.12.2
+Flask-Migrate==2.1.1
+Flask-SQLAlchemy==2.3.2
+newsapi-python==0.2.2
+newspaper3k==0.2.6
+pylint==1.7.5
+SQLAlchemy==1.2.7
+uWSGI==2.0.15
