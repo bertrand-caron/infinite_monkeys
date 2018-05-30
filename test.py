@@ -8,6 +8,8 @@ from os.path import basename, dirname
 from pprint import pprint
 from operator import itemgetter
 
+from flask_app.similarity import get_word_frequency, article_similarity as article_similarity_v_2
+
 DEBUG = False
 
 def article_similarity_v_0(article: str, _article: str) -> float:
@@ -38,17 +40,6 @@ def article_similarity_v_1(article: str, _article: str) -> float:
         ]
     )
 
-def article_similarity_v_2(article_word_dict: Dict[str, int], _article_word_dict: Dict[str, int]) -> float:
-    '''
-    Given two word distributions, return the percentage of words present in both distributions.
-
-    '''
-    word_set, _word_set = map(set, (article_word_dict, _article_word_dict))
-    try:
-        return len(word_set & _word_set) / len(word_set | _word_set)
-    except ZeroDivisionError:
-        # Case where both articles are empty
-        return 0.0
 
 def truncate_link(link: str, max_length: int = 50) -> str:
     return link

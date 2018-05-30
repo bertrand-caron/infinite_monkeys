@@ -6,6 +6,7 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from similarity import get_word_frequency, article_similarity
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -92,10 +93,22 @@ def get_pairs_for_url(article_id: int):
 
 @app.route('/article_pairs', methods=['GET'])
 def get_all_article_pairs():
+    FILTERS = {
+        'min_score': lambda parameter: Article_Pair.score >= parameter,
+        'max_score': lambda parameter: Article_Pair.score <= parameter,
+        'article_id': lambda parameter: Article_Pair.article_id == parameter or Article_Pair._article_id == parameter,
+    }
+
+    query = Article_Pair.query.join(Article.id)
+
+    for (parameter_name, query_function) in FILTERS.items():
+        if parameter_name in request.values:
+            query = query.filter(query_function(request.values[parameter_name]))
+
     return jsonify(
         [
             article_pair.as_dict()
-            for article_pair in Article_Pair.query.all()
+            for article_pair in query.all()
         ]
     )
 
@@ -128,7 +141,10 @@ def add_pair():
         ),
     )
 
-    db.session.add(new_article_pair)
-    db.session.commit()
+    try:
+        db.session.add(new_article_pair)
+        db.session.commit()
+    except IntegrityError:
+        return jsonify({'status': 'error', 'details': 'This pair already exists.'}), 404
 
     return jsonify({'status': 'success', 'new_article_pair': new_article_pair.as_dict()})

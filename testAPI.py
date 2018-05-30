@@ -1,3 +1,4 @@
+from os import environ
 from newsapi import NewsApiClient
 from sys import argv
 from newspaper import fulltext
@@ -5,6 +6,8 @@ from requests import get
 from json import dumps
 from multiprocessing import Pool
 from typing import Any
+
+JSON_ARTICLE_DUMP = 'articles_V2.json'
 
 def get_article(i:int, article: Any) -> Any:
     linkText = get(article['url'], headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'})
@@ -25,7 +28,10 @@ def get_article(i:int, article: Any) -> Any:
     return article_dict
 
 def main(query: str = None, max_page: int = 4, page_size: int = 100):
-    newsapi = NewsApiClient(api_key='<api key>')
+    try:
+        newsapi = NewsApiClient(api_key=environ['NEWSAPI_KEY'])
+    except KeyError:
+        raise Exception('Please provide the "NEWSAPI_KEY" in your shell environment.')
 
     article_dicts = []
     for page in range(1, max_page + 1):
@@ -44,7 +50,7 @@ def main(query: str = None, max_page: int = 4, page_size: int = 100):
                 enumerate(articleList, start=len(article_dicts))
             )
 
-    with open('articles_V2.json', 'wt') as fh:
+    with open(JSON_ARTICLE_DUMP, 'wt') as fh:
         fh.write(dumps(article_dicts))
 
 if __name__ == '__main__':
