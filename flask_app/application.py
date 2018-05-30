@@ -1,12 +1,14 @@
 from typing import Dict, Any
-from traceback import format_exc
+from traceback import format_exc, print_exc
 from operator import itemgetter
 from json import loads
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from similarity import get_word_frequency, article_similarity
 from sqlalchemy.exc import IntegrityError
+
+from similarity import get_word_frequency, article_similarity
+from authentification import No_User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -15,12 +17,27 @@ db.create_all()
 db.session.commit()
 migrate = Migrate(app, db)
 
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    email = db.Column(db.String(250), unique=True, nullable=False)
+    api_key = db.Column(db.String(65), nullable=False)
+    is_admin = db.Column(db.Boolean(), default=False)
+
+    def as_dict(self) -> Dict[str, Any]:
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    def __repr__(self) -> str:
+        return str(self.__dict__)
+
 class Article(db.Model):
     __tablename__ = 'articles'
 
     id = db.Column(db.Integer(), primary_key=True)
     url = db.Column(db.String(250), nullable=False)
     text = db.Column(db.Text(), nullable=False)
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
 
     #pairs = db.relationship()
 
@@ -121,15 +138,19 @@ def add_pair():
         if maybe_url is not None:
             return maybe_url
         else:
-            maybe_url = Article(url=url_str, text=text_str)
+            user = get_user_from_api_key()
+            maybe_url = Article(url=url_str, text=text_str, user_id=user.id)
             db.session.add(maybe_url)
             db.session.flush()
             return maybe_url
 
-    articles = [
-        retrieve_or_create_url(url_str, text_str)
-        for (url_str, text_str) in [itemgetter(prefix + 'url', prefix + 'text')(payload) for prefix in ('', '_')]
-    ]
+    try:
+        articles = [
+            retrieve_or_create_url(url_str, text_str)
+            for (url_str, text_str) in [itemgetter(prefix + 'url', prefix + 'text')(payload) for prefix in ('', '_')]
+        ]
+    except No_User:
+        return jsonify('Unauthorised access.'), 404
 
     new_article_pair = Article_Pair(
         **dict(zip(
@@ -148,3 +169,25 @@ def add_pair():
         return jsonify({'status': 'error', 'details': 'This pair already exists.'}), 404
 
     return jsonify({'status': 'success', 'new_article_pair': new_article_pair.as_dict()})
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    try:
+        user = get_user_from_api_key()
+        assert user.is_admin, user
+    except (No_User, AssertionError):
+        print_exc()
+        return jsonify('Unauthorised access', 404)
+
+    return jsonify(
+        [
+            user.as_dict()
+            for user in User.query.all()
+        ]
+    )
+
+def get_user_from_api_key() -> User:
+    try:
+        return User.query.filter(User.api_key == request.values['api_key']).one()
+    except:
+        raise No_User
