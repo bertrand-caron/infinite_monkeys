@@ -15,7 +15,7 @@ with app.app_context():
         else:
             user = User.query.one()
 
-        if len(Article.query.all()) <= 2:
+        if len(Article.query.all()) < 2:
             article_1, article_2 = [
                 Article(url='abc.net/news', text='This is news! Watch out!', user_id=user.id),
                 Article(url='abc.net/more-news', text='This is more news! Watch out!', user_id=user.id),

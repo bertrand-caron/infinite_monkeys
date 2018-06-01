@@ -85,9 +85,10 @@ def get_all_article_pairs():
         'min_score': lambda parameter: Article_Pair.score >= parameter,
         'max_score': lambda parameter: Article_Pair.score <= parameter,
         'article_id': lambda parameter: Article_Pair.article_id == parameter or Article_Pair._article_id == parameter,
+        'article_url': lambda parameter: Article.url == parameter,
     }
 
-    query = Article_Pair.query.join(Article.id)
+    query = Article_Pair.query
 
     for (parameter_name, query_function) in FILTERS.items():
         if parameter_name in request.values:

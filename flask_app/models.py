@@ -27,6 +27,11 @@ class Article(db.Model):
 
     user = db.relationship('User')
 
+    __table_args__ = (
+        db.UniqueConstraint('url'),
+        {},
+    )
+
     def as_dict(self) -> Dict[str, Any]:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
