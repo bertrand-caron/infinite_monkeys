@@ -1,69 +1,26 @@
-from typing import Dict, Any
+from os import environ
+from typing import Dict, Any, Set
 from traceback import format_exc, print_exc
 from operator import itemgetter
 from json import loads
-from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, jsonify, request, current_app
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import NoResultFound
 
+from factory import create_app
+from models import db, User, Article, Article_Pair
 from similarity import get_word_frequency, article_similarity
-from authentification import No_User
+from authentification import No_User, User_Not_Admin, Unauthorised_Access, Missing_API_Key, get_user_from_api_key
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-db = SQLAlchemy(app)
-db.create_all()
-db.session.commit()
+app = create_app()
+try:
+    app.config['SQLALCHEMY_DATABASE_URI'] = environ['FLASK_DB']
+except KeyError:
+    raise Exception('''Please export the FLASK_DB variable in your shell environment. Example: 'export FLASK_DB="mysql://username:password@localhost/db_name"'.''')
+app.config['SQLALCHEMY_ECHO'] = True
+db.init_app(app)
 migrate = Migrate(app, db)
-
-class User(db.Model):
-    __tablename__ = 'users'
-
-    id = db.Column(db.Integer(), primary_key=True)
-    email = db.Column(db.String(250), unique=True, nullable=False)
-    api_key = db.Column(db.String(65), nullable=False)
-    is_admin = db.Column(db.Boolean(), default=False)
-
-    def as_dict(self) -> Dict[str, Any]:
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-    def __repr__(self) -> str:
-        return str(self.__dict__)
-
-class Article(db.Model):
-    __tablename__ = 'articles'
-
-    id = db.Column(db.Integer(), primary_key=True)
-    url = db.Column(db.String(250), nullable=False)
-    text = db.Column(db.Text(), nullable=False)
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
-
-    #pairs = db.relationship()
-
-    def as_dict(self) -> Dict[str, Any]:
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-    def __repr__(self) -> str:
-        return str(self.__dict__)
-
-class Article_Pair(db.Model):
-    __tablename__ = 'article_pairs'
-
-    article_id = db.Column(db.Integer(), db.ForeignKey('articles.id'), nullable=False)
-    _article_id = db.Column(db.Integer(), db.ForeignKey('articles.id'), nullable=False)
-    score = db.Column(db.Float(), nullable=False)
-
-    __table_args__ = (
-        db.PrimaryKeyConstraint('article_id', '_article_id'),
-        {},
-    )
-
-    def as_dict(self) -> Dict[str, Any]:
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-    def __repr__(self) -> str:
-        return str(self.__dict__)
 
 @app.route('/articles', methods=['GET'])
 def get_all_articles():
@@ -75,7 +32,7 @@ def get_all_articles():
     )
 
 @app.route('/articles/add', methods=['POST'])
-def add_url():
+def add_article():
     try:
         payload = request.get_json(force=True)
         new_article = Article(**payload)
@@ -91,6 +48,20 @@ def add_url():
             }),
             404,
         )
+
+@app.route('/articles/<int:article_id>/delete', methods=['DELETE'])
+def delete_article(article_id: int):
+    try:
+        user = get_user_from_api_key(need_admin=True)
+    except Missing_API_Key:
+        return jsonify('Missing API key (?api_key=...)'), 404
+    except Unauthorised_Access:
+        return jsonify('Unauthorised access.'), 404
+
+    db.session.delete(Article.query.filter(Article.id == article_id).one())
+    db.session.commit()
+
+    return jsonify(False)
 
 @app.route('/articles/<int:article_id>', methods=['GET'])
 def get_url_dict(article_id: int):
@@ -173,9 +144,8 @@ def add_pair():
 @app.route('/users', methods=['GET'])
 def get_users():
     try:
-        user = get_user_from_api_key()
-        assert user.is_admin, user
-    except (No_User, AssertionError):
+        user = get_user_from_api_key(need_admin=True)
+    except Unauthorised_Access:
         print_exc()
         return jsonify('Unauthorised access', 404)
 
@@ -185,9 +155,3 @@ def get_users():
             for user in User.query.all()
         ]
     )
-
-def get_user_from_api_key() -> User:
-    try:
-        return User.query.filter(User.api_key == request.values['api_key']).one()
-    except:
-        raise No_User

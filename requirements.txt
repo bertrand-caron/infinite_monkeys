@@ -7,3 +7,4 @@ newspaper3k==0.2.6
 pylint==1.7.5
 SQLAlchemy==1.2.7
 uWSGI==2.0.15
+begins==0.9
